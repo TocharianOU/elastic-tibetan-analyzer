@@ -83,6 +83,20 @@ services:
     command: sh /import-medical-qa.sh
     restart: "no"
 
+  knowledge-base-import:
+    image: badouralix/curl-jq:latest
+    container_name: es-knowledge-base-import
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    volumes:
+      - ./docker/import-knowledge-base.sh:/import-knowledge-base.sh:ro
+      - ./docker/knowledge-base-data:/usr/share/elasticsearch/knowledge-base-data:ro
+    networks:
+      - elastic-net
+    command: sh /import-knowledge-base.sh
+    restart: "no"
+
 volumes:
   es-data:
     driver: local
