@@ -4,7 +4,7 @@
 
 ---
 
-A dictionary-based Tibetan language analyzer plugin for Elasticsearch 8.7+, implementing longest-match word segmentation algorithm.
+A dictionary-based Tibetan language analyzer plugin for Elasticsearch 8.x and 9.x, implementing longest-match word segmentation algorithm.
 
 ## Features
 
@@ -12,6 +12,7 @@ A dictionary-based Tibetan language analyzer plugin for Elasticsearch 8.7+, impl
 - ✅ Longest-match tokenization algorithm
 - ✅ Tibetan grammatical particle and suffix handling
 - ✅ Custom dictionary support
+- ✅ Elasticsearch stable plugin packaging for ES 8.x and 9.x
 - ✅ Docker test environment included
 
 ## Quick Start with Docker
@@ -108,8 +109,8 @@ All test data is pre-generated and included in the `docker/` directory:
 
 ### Prerequisites
 
-- Java 17+
-- Gradle 8.0+
+- Java 17+ for Elasticsearch 8.x builds
+- Java 21+ for Elasticsearch 9.x builds
 
 ### Build Steps
 
@@ -118,12 +119,11 @@ All test data is pre-generated and included in the `docker/` directory:
 git clone https://github.com/TocharianOU/elastic-tibetan-analyzer.git
 cd elastic-tibetan-analyzer
 
-# Build plugin
-./gradlew clean build
+# Build and test plugin
+./gradlew clean check
 
 # Plugin artifacts will be in:
-# - build/distributions/tibetan-analyzer-plugin-v1.0-es8.7+.zip
-# - releases/v1.0-es8.7+/
+# - build/distributions/tibetan-analyzer-plugin-2.0.0-es8.zip
 ```
 
 ## Manual Installation
@@ -132,7 +132,7 @@ cd elastic-tibetan-analyzer
 
 ```bash
 # Install from local file
-bin/elasticsearch-plugin install file:///path/to/tibetan-analyzer-plugin-v1.0-es8.7+.zip
+bin/elasticsearch-plugin install file:///path/to/tibetan-analyzer-plugin-2.0.0-es8.zip
 
 # Restart Elasticsearch
 ```

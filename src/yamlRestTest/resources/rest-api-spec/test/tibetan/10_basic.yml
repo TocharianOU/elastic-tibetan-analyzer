@@ -1,0 +1,27 @@
+---
+"tibetan analyzer segments common greeting":
+  - do:
+      indices.analyze:
+        body:
+          analyzer: tibetan_analyzer
+          text: "བཀྲ་ཤིས་བདེ་ལེགས།"
+
+  - length: { tokens: 2 }
+  - match: { tokens.0.token: "བཀྲ་ཤིས་བདེ་ལེགས" }
+  - match: { tokens.0.start_offset: 0 }
+  - match: { tokens.0.end_offset: 16 }
+  - match: { tokens.1.token: "།" }
+  - match: { tokens.1.start_offset: 16 }
+  - match: { tokens.1.end_offset: 17 }
+
+---
+"tibetan analyzer handles mixed phrase":
+  - do:
+      indices.analyze:
+        body:
+          analyzer: tibetan_analyzer
+          text: "བོད་ཡིག།"
+
+  - length: { tokens: 2 }
+  - match: { tokens.0.token: "བོད་ཡིག" }
+  - match: { tokens.1.token: "།" }

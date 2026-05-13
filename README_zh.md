@@ -4,7 +4,7 @@
 
 ---
 
-基于词典的藏文分词器插件，支持 Elasticsearch 8.7+，采用最长匹配算法。
+基于词典的藏文分词器插件，支持 Elasticsearch 8.x 和 9.x，采用最长匹配算法。
 
 ## 特性
 
@@ -12,6 +12,7 @@
 - ✅ 最长匹配算法
 - ✅ 藏文语法后缀处理
 - ✅ 自定义词典支持
+- ✅ Elasticsearch 8.x/9.x stable plugin 打包
 - ✅ Docker 测试环境
 
 ## Docker 快速开始
@@ -108,8 +109,8 @@ curl -X POST "http://localhost:9200/tibetan_qa/_search" -H 'Content-Type: applic
 
 ### 环境要求
 
-- Java 17+
-- Gradle 8.0+
+- Elasticsearch 8.x 构建需要 Java 17 或更高版本
+- Elasticsearch 9.x 构建需要 Java 21 或更高版本
 
 ### 构建步骤
 
@@ -118,12 +119,11 @@ curl -X POST "http://localhost:9200/tibetan_qa/_search" -H 'Content-Type: applic
 git clone https://github.com/TocharianOU/elastic-tibetan-analyzer.git
 cd elastic-tibetan-analyzer
 
-# 构建插件
-./gradlew clean build
+# 构建并测试插件
+./gradlew clean check
 
 # 插件文件位置：
-# - build/distributions/tibetan-analyzer-plugin-v1.0-es8.7+.zip
-# - releases/v1.0-es8.7+/
+# - build/distributions/tibetan-analyzer-plugin-2.0.0-es8.zip
 ```
 
 ## 手动安装
@@ -132,7 +132,7 @@ cd elastic-tibetan-analyzer
 
 ```bash
 # 从本地文件安装
-bin/elasticsearch-plugin install file:///path/to/tibetan-analyzer-plugin-v1.0-es8.7+.zip
+bin/elasticsearch-plugin install file:///path/to/tibetan-analyzer-plugin-2.0.0-es8.zip
 
 # 重启 Elasticsearch
 ```

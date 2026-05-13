@@ -10,7 +10,7 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
       - es-data:/usr/share/elasticsearch/data
-      - ./releases/v1.0-es8.7+:/tmp/plugins:ro
+      - ./releases/v2.0.0:/tmp/plugins:ro
       - ./docker/init-plugin.sh:/usr/local/bin/init-plugin.sh:ro
     ports:
       - "9200:9200"

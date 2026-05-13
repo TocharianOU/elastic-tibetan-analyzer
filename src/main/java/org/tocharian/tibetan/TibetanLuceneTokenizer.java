@@ -13,21 +13,19 @@
  * under the License.
  */
 
-package org.tocharian;
+package org.tocharian.tibetan;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
-import org.tocharian.tibetan.TibetanTokenizer;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 
 /**
- * Lucene Tokenizer for Tibetan text
- * Uses TibetanTokenizer to perform word segmentation
+ * Lucene tokenizer bridge for Tibetan longest-match segmentation.
  */
 public class TibetanLuceneTokenizer extends Tokenizer {
     
@@ -49,9 +47,7 @@ public class TibetanLuceneTokenizer extends Tokenizer {
     public final boolean incrementToken() throws IOException {
         clearAttributes();
         
-        // Initialize on first call
         if (tokens == null) {
-            // Read entire input
             StringBuilder sb = new StringBuilder();
             char[] buffer = new char[8192];
             int numRead;
@@ -61,17 +57,14 @@ public class TibetanLuceneTokenizer extends Tokenizer {
             }
             inputText = sb.toString();
             
-            // Tokenize using Tibetan tokenizer
             tokens = tibetanTokenizer.tokenize(inputText);
             tokenIndex = 0;
             currentOffset = 0;
         }
         
-        // Return next token
         if (tokenIndex < tokens.size()) {
             String token = tokens.get(tokenIndex);
             
-            // Find token position in original text
             int startOffset = inputText.indexOf(token, currentOffset);
             if (startOffset == -1) {
                 startOffset = currentOffset;
@@ -99,4 +92,3 @@ public class TibetanLuceneTokenizer extends Tokenizer {
         inputText = null;
     }
 }
-

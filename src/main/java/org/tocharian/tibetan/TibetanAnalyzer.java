@@ -13,18 +13,15 @@
  * under the License.
  */
 
-package org.tocharian;
+package org.tocharian.tibetan;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
-import org.tocharian.tibetan.TibetanDictionaryManager;
-import org.tocharian.tibetan.TibetanTokenizer;
 
 import java.io.IOException;
 
 /**
- * Tibetan analyzer for Elasticsearch
- * Provides Tibetan word segmentation based on longest-match algorithm
+ * Tibetan analyzer for Elasticsearch.
  */
 public class TibetanAnalyzer extends Analyzer {
     
@@ -49,9 +46,6 @@ public class TibetanAnalyzer extends Analyzer {
         return new TokenStreamComponents(tokenizer);
     }
     
-    /**
-     * Get dictionary statistics
-     */
     public String getStatistics() {
         if (dictionaryManager != null && dictionaryManager.isInitialized()) {
             return dictionaryManager.getStatistics().toString();
@@ -59,4 +53,3 @@ public class TibetanAnalyzer extends Analyzer {
         return "Dictionary not initialized";
     }
 }
-

@@ -13,26 +13,22 @@
  * under the License.
  */
 
-package org.tocharian;
+package org.tocharian.tibetan;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Tibetan dictionary loader
- * Loads dictionary files from resources
+ * Loads Tibetan dictionary resources from the plugin classpath.
  */
 public class TibetanDictionaryLoader {
-    
-    /**
-     * Load a dictionary file and return as a Set
-     * @param filename The dictionary filename (without path)
-     * @return Set of dictionary entries
-     */
     public static Set<String> loadDictionary(String filename) throws IOException {
         Set<String> dictionary = new HashSet<>();
         String path = "/dictionaries/" + filename;
@@ -44,7 +40,6 @@ public class TibetanDictionaryLoader {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                // Skip empty lines and comments
                 if (!line.isEmpty() && !line.startsWith("#")) {
                     dictionary.add(line);
                 }
@@ -54,9 +49,6 @@ public class TibetanDictionaryLoader {
         return dictionary;
     }
     
-    /**
-     * Load a dictionary file and return as a List (for suffixes where order matters)
-     */
     public static List<String> loadDictionaryAsList(String filename) throws IOException {
         List<String> dictionary = new ArrayList<>();
         String path = "/dictionaries/" + filename;
@@ -68,7 +60,6 @@ public class TibetanDictionaryLoader {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                // Skip empty lines and comments
                 if (!line.isEmpty() && !line.startsWith("#")) {
                     dictionary.add(line);
                 }
@@ -78,20 +69,14 @@ public class TibetanDictionaryLoader {
         return dictionary;
     }
     
-    /**
-     * Get resource as stream with multiple fallback paths
-     */
     private static InputStream getResourceAsStream(String path) throws IOException {
-        // Try class loader first
         InputStream is = TibetanDictionaryLoader.class.getResourceAsStream(path);
         
         if (is == null) {
-            // Try without leading slash
             is = TibetanDictionaryLoader.class.getResourceAsStream(path.substring(1));
         }
         
         if (is == null) {
-            // Try class loader
             is = TibetanDictionaryLoader.class.getClassLoader().getResourceAsStream(path.substring(1));
         }
         
@@ -102,4 +87,3 @@ public class TibetanDictionaryLoader {
         return is;
     }
 }
-

@@ -15,8 +15,6 @@
 
 package org.tocharian.tibetan;
 
-import org.tocharian.TibetanDictionaryLoader;
-
 import java.io.IOException;
 import java.util.*;
 

@@ -25,7 +25,7 @@ GET /_cat/plugins?v
 Expected output:
 ```
 name             component           version
-es-tibetan-test  tibetan-analyzer-plugin v1.0-es8.7+
+es-tibetan-test  tibetan-analyzer-plugin 2.0.0-es8
 ```
 
 ### Step 4: Test the Analyzer

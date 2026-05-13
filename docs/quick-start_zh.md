@@ -25,7 +25,7 @@ GET /_cat/plugins?v
 预期输出：
 ```
 name             component           version
-es-tibetan-test  tibetan-analyzer-plugin v1.0-es8.7+
+es-tibetan-test  tibetan-analyzer-plugin 2.0.0-es8
 ```
 
 ### 步骤 4: 测试分词器

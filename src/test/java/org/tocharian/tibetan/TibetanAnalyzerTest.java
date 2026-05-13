@@ -1,4 +1,4 @@
-package org.tocharian;
+package org.tocharian.tibetan;
 
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -9,7 +9,9 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class TibetanAnalyzerTest {
     
@@ -25,13 +27,7 @@ public class TibetanAnalyzerTest {
         String text = "བཀྲ་ཤིས་བདེ་ལེགས།";
         List<String> tokens = tokenize(text);
         
-        System.out.println("Test: " + text);
-        System.out.println("Tokens: " + tokens);
-        
         assertFalse("Should produce tokens", tokens.isEmpty());
-        
-        // Expected: བཀྲ་ཤིས་, བདེ་ལེགས, །
-        // At minimum should not split by tsek
         assertTrue("Should not have single syllables only", 
             tokens.stream().anyMatch(t -> t.length() > 3));
     }
@@ -41,16 +37,12 @@ public class TibetanAnalyzerTest {
         String text = "ང་ཚོས་སློབ་གྲྭར་འགྲོ་དགོས།";
         List<String> tokens = tokenize(text);
         
-        System.out.println("Test: " + text);
-        System.out.println("Tokens: " + tokens);
-        
         assertFalse("Should produce tokens", tokens.isEmpty());
     }
     
     @Test
     public void testDictionaryLoaded() {
         String stats = analyzer.getStatistics();
-        System.out.println("Dictionary statistics: " + stats);
         
         assertNotNull("Statistics should not be null", stats);
         assertFalse("Dictionary should be initialized", 
@@ -75,4 +67,3 @@ public class TibetanAnalyzerTest {
         return result;
     }
 }
-

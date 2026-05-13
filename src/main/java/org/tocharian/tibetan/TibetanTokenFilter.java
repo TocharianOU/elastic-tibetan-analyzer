@@ -13,20 +13,18 @@
  * under the License.
  */
 
-package org.tocharian;
+package org.tocharian.tibetan;
 
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
-import org.tocharian.tibetan.TibetanTokenizer;
 
 import java.io.IOException;
 import java.util.List;
 
 /**
- * Tibetan token filter
- * Processes tokens from input stream and applies Tibetan tokenization
+ * Alternate token filter form for applying Tibetan tokenization to upstream tokens.
  */
 public class TibetanTokenFilter extends TokenFilter {
     
@@ -37,7 +35,6 @@ public class TibetanTokenFilter extends TokenFilter {
     private List<String> currentTokens;
     private int currentTokenIndex;
     private int currentStartOffset;
-    private int currentEndOffset;
     
     public TibetanTokenFilter(TokenStream input, TibetanTokenizer tokenizer) {
         super(input);
@@ -46,13 +43,11 @@ public class TibetanTokenFilter extends TokenFilter {
     
     @Override
     public final boolean incrementToken() throws IOException {
-        // If we have tokens from previous segmentation, output them
         if (currentTokens != null && currentTokenIndex < currentTokens.size()) {
             clearAttributes();
             String token = currentTokens.get(currentTokenIndex);
             termAttr.append(token);
             
-            // Calculate offsets (approximate)
             int tokenLength = token.length();
             offsetAttr.setOffset(currentStartOffset, currentStartOffset + tokenLength);
             currentStartOffset += tokenLength;
@@ -61,36 +56,26 @@ public class TibetanTokenFilter extends TokenFilter {
             return true;
         }
         
-        // Get next token from input
         if (input.incrementToken()) {
             String inputToken = termAttr.toString();
             int startOffset = offsetAttr.startOffset();
-            int endOffset = offsetAttr.endOffset();
             
-            // Tokenize using Tibetan tokenizer
             List<String> tokens = tibetanTokenizer.tokenize(inputToken);
             
             if (tokens != null && !tokens.isEmpty()) {
                 if (tokens.size() == 1) {
-                    // Single token, just pass through
                     return true;
-                } else {
-                    // Multiple tokens, save for incremental output
-                    currentTokens = tokens;
-                    currentTokenIndex = 0;
-                    currentStartOffset = startOffset;
-                    currentEndOffset = endOffset;
-                    
-                    // Output first token
-                    return incrementToken();
                 }
-            } else {
-                // No tokens produced, pass through original
-                return true;
+
+                currentTokens = tokens;
+                currentTokenIndex = 0;
+                currentStartOffset = startOffset;
+                return incrementToken();
             }
+
+            return true;
         }
         
-        // No more input tokens
         return false;
     }
     
@@ -100,7 +85,5 @@ public class TibetanTokenFilter extends TokenFilter {
         currentTokens = null;
         currentTokenIndex = 0;
         currentStartOffset = 0;
-        currentEndOffset = 0;
     }
 }
-

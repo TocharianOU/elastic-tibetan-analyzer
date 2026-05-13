@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-PLUGIN_ZIP="/tmp/plugins/tibetan-analyzer-plugin-v1.0-es8.7+.zip"
+PLUGIN_ZIP="/tmp/plugins/tibetan-analyzer-plugin-2.0.0-es8.zip"
 
 if [ -f "$PLUGIN_ZIP" ]; then
     echo "Installing Tibetan Analyzer Plugin..."
